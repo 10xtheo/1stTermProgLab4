@@ -245,8 +245,8 @@ int main()
         stringstream ssin(line);
         while (ssin.good() && i < wordsAmount)
         {
-            ssin >> arr[i];
-            ++i;
+          ssin >> arr[i];
+          ++i;
         }
         shakerSort(arr, wordsAmount);
         for (int i = 0; i < wordsAmount; ++i)
