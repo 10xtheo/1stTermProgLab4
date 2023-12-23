@@ -16,17 +16,33 @@ int getNumber ()
   return a;
 }
 
-int len(char* A)
+int lenStr(char* A)
 {
   int i;
   for (i = 0; A[i] != 0; ++i);
   return i;
 }
 
-bool in(char A[], char x)
+int lenStr(string A)
+{
+  int i;
+  for (i = 0; A[i] != '\0'; ++i);
+  return i;
+}
+
+bool inStr(char A[], char x)
 {
   int f = false;
-  for (int i = 0; i < len(A); ++i)
+  for (int i = 0; i < lenStr(A); ++i)
+    if (A[i] == x)
+      f = true;
+  return f;
+}
+
+bool inArr(char A[], char x, int length)
+{
+  int f = false;
+  for (int i = 0; i < length; ++i)
     if (A[i] == x)
       f = true;
   return f;
@@ -35,13 +51,14 @@ bool in(char A[], char x)
 void removeExtraMarks(char* A)
 {
   char marks[] = {' ', ',', '!', '?', ':', ';', '"', '(', ')', '{', '}', '[', ']', '-', '_'};
-  for (int m = 0; m < len(marks); ++m)
+  int lenMarks = 15; 
+  for (int m = 0; m < lenMarks; ++m)
   {
     int j = 0;
     bool lastCharMark = false;
     for (int i = 0 ; A[i] != '\0'; ++i)
     {
-      if (in(marks, A[i]))
+      if (inArr(marks, A[i], lenMarks))
       {
         if (!lastCharMark)
         {
@@ -64,13 +81,14 @@ void removeExtraMarks(char* A)
 void fixCase(char* A)
 {
   char capitalMarks[] = {'.', '!', '?'};
+  int lenCapitalMarks = 3;
   if (islower(A[0]))
     A[0] = toupper(A[0]);
-  for (int i = 1; i < len(A); ++i)
+  for (int i = 1; i < lenStr(A); ++i)
   {
     if (i != 1 && i != 2)
     {
-      if (in(capitalMarks, A[i-1]) || in(capitalMarks, A[i-2]))
+      if (inArr(capitalMarks, A[i-1], lenCapitalMarks) || inArr(capitalMarks, A[i-2], lenCapitalMarks))
       {
         if (islower(A[i]))
           A[i] = toupper(A[i]);
@@ -92,11 +110,12 @@ void fixCase(char* A)
 void verticalOuput(char *A)
 {
   char marks[] = {' ', ',', '!', '?', ':', ';', '"', '(', ')', '{', '}', '[', ']', '-', '_'};
-  for (int i = 0; i < len(A); ++i)
+  int lenMarks = 15; 
+  for (int i = 0; i < lenStr(A); ++i)
   {
-    if (in(marks, A[i]) && (in(marks, A[i-1])))
+    if (inArr(marks, A[i], lenMarks) && (inArr(marks, A[i-1], lenMarks)))
       cout << '\0';
-    else if (in(marks, A[i]))
+    else if (inArr(marks, A[i], lenMarks))
       cout << endl;
     else
       cout << A[i];
@@ -132,7 +151,7 @@ void linearSearch(char *str, char *subStr)
 
 int count(char *array, char aim)
 {
-  int length = len(array);
+  int length = lenStr(array);
   int counter = 0;
   for (int i = 0; i < length; ++i)
   {
@@ -146,7 +165,7 @@ int count(char *array, char aim)
 
 bool stringComparing(char *A, char *B)
 {
-  int mnLen = (len(A) <= len(B)) ? (len(A)) : (len(B));
+  int mnLen = (lenStr(A) <= lenStr(B)) ? (lenStr(A)) : (lenStr(B));
   for (int i = 0; i < mnLen; ++i)
   {
     if (A[i] < B[i])
@@ -210,30 +229,34 @@ int main()
       }
       case 3:
       {
+        char marks[] = {' ', ',', '!', '?', ':', ';', '"', '(', ')', '{', '}', '[', ']', '-', '_'};
+        int lenMarks = 15;
         removeExtraMarks(A);
         //fixCase(A);
-        for (int i = 0; i < len(A); ++i)
+        for (int i = 0; i < lenStr(A); ++i)
         {
           A[i] = tolower(A[i]);
         }
         string line = A;
-        int wordsAmout = count(A, ' ')+1;
+        int wordsAmount = count(A, ' ')+1;
         string arr[N];
         int i = 0;
         stringstream ssin(line);
-        while (ssin.good() && i < wordsAmout)
+        while (ssin.good() && i < wordsAmount)
         {
             ssin >> arr[i];
             ++i;
         }
-        for(i = 0; i < wordsAmout; i++)
+        shakerSort(arr, wordsAmount);
+        for (int i = 0; i < wordsAmount; ++i)
         {
-            // cout << arr[i] << endl;
-        }
-        shakerSort(arr, wordsAmout);
-        for (int i = 0; i < wordsAmout; ++i)
-        {
-          cout << arr[i] << ' ';
+          // cout << arr[i] << ' ';
+          for (int j = 0; j < lenStr(arr[i]); ++j)
+          {
+            if (!inArr(marks, arr[i][j], lenMarks))
+              cout << arr[i][j];
+          }
+          cout << " ";
         }
         cout << endl;
         break;
