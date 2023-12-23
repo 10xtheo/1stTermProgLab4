@@ -126,7 +126,7 @@ void linearSearch(char *str, char *subStr)
     }
   }
   if (f1 == 0)
-    cout << "Включения данной подстроки отсутствуют" << endl;
+    cout << "Включения данной подстроки отсутствуют";
   cout << endl;
 }
 
@@ -158,17 +158,24 @@ bool stringComparing(char *A, char *B)
 }
 
 
-void bubbleSort(string* array, int length)
+void shakerSort(string *array, int length)
 {
-  for (int i = 0; i < length - 1; ++i)
+  int start = 0;
+  int end = length - 2;
+  while (start <= end)
   {
-    for (int j = 0; j < length - 1; ++j)
+    for (int i = start; i < length - 1 - start; ++i)
     {
-      if (array[j] > array[j+1])
-      {
-        swap(array[j], array[j+1]);
-      }
+      if (array[i] > array[i+1])
+        swap(array[i], array[i+1]);
     }
+    for (int i = end ; i > 0 + start; --i)
+    {
+      if (array[i] < array[i-1])
+        swap(array[i], array[i-1]);
+    }
+    start += 1;
+    end -= 1;
   }
 }
 
@@ -182,7 +189,7 @@ int main()
   while (!shouldbreak)
   {
     cout << "Выберите пункт работы: " << endl
-    << "2. Форматироваие строки" << endl
+    << "2. Форматирование строки" << endl
     << "3. Вывод слов строки по алфавиту" << endl
     << "4. Вертикальный вывод слов строки" << endl
     << "5. Поиск включений подстроки в исходную строку" << endl;
@@ -223,7 +230,7 @@ int main()
         {
             // cout << arr[i] << endl;
         }
-        bubbleSort(arr, wordsAmout);
+        shakerSort(arr, wordsAmout);
         for (int i = 0; i < wordsAmout; ++i)
         {
           cout << arr[i] << ' ';
